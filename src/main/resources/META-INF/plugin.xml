@@ -1,15 +1,30 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.github.sukieva.sqlanalyzer</id>
-    <name>sql-analyzer</name>
+    <name>SQL Analyzer</name>
     <vendor>sukieva</vendor>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.database</depends>
 
-    <resource-bundle>messages.MyBundle</resource-bundle>
+    <actions>
+        <action
+                id="SqlAnalyzer.LoadSelectionIntoAnalyzer"
+                class="com.github.sukieva.sqlanalyzer.action.LoadSelectionIntoAnalyzerAction"
+                text="Open in SQL Analyzer"
+                description="Run EXPLAIN (FORMAT JSON) for the current SQL and open it in SQL Analyzer">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt shift A"/>
+        </action>
+    </actions>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.sukieva.sqlanalyzer.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
+        <toolWindow
+                id="SQL Analyzer"
+                anchor="right"
+                secondary="true"
+                icon="AllIcons.Toolwindows.ToolWindowFind"
+                factoryClass="com.github.sukieva.sqlanalyzer.toolWindow.MyToolWindowFactory"/>
         <postStartupActivity implementation="com.github.sukieva.sqlanalyzer.startup.MyProjectActivity" />
     </extensions>
 </idea-plugin>
