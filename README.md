@@ -1,52 +1,28 @@
-# sql-analyzer
+# SQL Analyzer (DataGrip Plugin)
 
-![Build](https://github.com/SukiEva/sql-analyzer/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
+A DataGrip-focused query plan viewer inspired by [pev2](https://github.com/dalibo/pev2).
 
-## Template ToDo list
-- [x] Create a new [IntelliJ Platform Plugin Template][template] project.
-- [ ] Get familiar with the [template documentation][template].
-- [ ] Adjust the [pluginGroup](./gradle.properties) and [pluginName](./gradle.properties), as well as the [id](./src/main/resources/META-INF/plugin.xml) and [sources package](./src/main/kotlin).
-- [ ] Adjust the plugin description in `README` (see [Tips][docs:plugin-description])
-- [ ] Review the [Legal Agreements](https://plugins.jetbrains.com/docs/marketplace/legal-agreements.html?from=IJPluginTemplate).
-- [ ] [Publish a plugin manually](https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html?from=IJPluginTemplate) for the first time.
-- [ ] Set the `MARKETPLACE_ID` in the above README badges. You can obtain it once the plugin is published to JetBrains Marketplace.
-- [ ] Set the [Plugin Signing](https://plugins.jetbrains.com/docs/intellij/plugin-signing.html?from=IJPluginTemplate) related [secrets](https://github.com/JetBrains/intellij-platform-plugin-template#environment-variables).
-- [ ] Set the [Deployment Token](https://plugins.jetbrains.com/docs/marketplace/plugin-upload.html?from=IJPluginTemplate).
-- [ ] Click the <kbd>Watch</kbd> button on the top of the [IntelliJ Platform Plugin Template][template] to be notified about releases containing new features and fixes.
-- [ ] Configure the [CODECOV_TOKEN](https://docs.codecov.com/docs/quick-start) secret for automated test coverage reports on PRs
+## What changed
+
+This plugin now focuses on three layers:
+
+1. **DataGrip integration**: capture the current editor statement, execute `EXPLAIN (FORMAT JSON)` against the active DataGrip connection, and open the result in the analyzer.
+2. **JCEF plan viewer**: render a pev2-inspired dark execution-plan UI with search, node details, settings, and metrics inside the IDE.
+3. **Structured parser/model**: parse PostgreSQL `EXPLAIN (FORMAT JSON)` into a typed tree instead of rendering raw `JsonNode` values directly.
+
+## Usage
+
+1. Open a PostgreSQL SQL file or DataGrip console attached to a live connection.
+2. Put the caret inside a statement or select a query.
+3. Run **Open in SQL Analyzer** from the editor context menu.
+4. The plugin will execute `EXPLAIN (FORMAT JSON)` automatically and render the plan in the **SQL Analyzer** tool window.
+5. You can still paste JSON manually and click **Analyze JSON** for offline inspection.
 
 <!-- Plugin description -->
-This Fancy IntelliJ Platform Plugin is going to be your implementation of the brilliant ideas that you have.
-
-This specific section is a source for the [plugin.xml](/src/main/resources/META-INF/plugin.xml) file which will be extracted by the [Gradle](/build.gradle.kts) during the build process.
-
-To keep everything working, do not remove `<!-- ... -->` sections. 
+SQL Analyzer brings a pev2-inspired PostgreSQL plan viewer into DataGrip.
+It captures SQL from the active editor, executes `EXPLAIN (FORMAT JSON)` through the current DataGrip connection, parses the result into a structured model, and renders the plan in a JCEF-based tool window with search and node details.
 <!-- Plugin description end -->
 
-## Installation
+## Status
 
-- Using the IDE built-in plugin system:
-
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "sql-analyzer"</kbd> >
-  <kbd>Install</kbd>
-
-- Using JetBrains Marketplace:
-
-  Go to [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID) and install it by clicking the <kbd>Install to ...</kbd> button in case your IDE is running.
-
-  You can also download the [latest release](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID/versions) from JetBrains Marketplace and install it manually using
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
-
-- Manually:
-
-  Download the [latest release](https://github.com/SukiEva/sql-analyzer/releases/latest) and install it manually using
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
-
-
----
-Plugin based on the [IntelliJ Platform Plugin Template][template].
-
-[template]: https://github.com/JetBrains/intellij-platform-plugin-template
-[docs:plugin-description]: https://plugins.jetbrains.com/docs/intellij/plugin-user-experience.html#plugin-description-and-presentation
+Current scope is intentionally focused on PostgreSQL JSON plans in DataGrip-connected editors. The next iteration can improve statement detection, richer PostgreSQL telemetry, and packaging polish.
