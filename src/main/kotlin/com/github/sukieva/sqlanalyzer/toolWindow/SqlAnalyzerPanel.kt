@@ -47,7 +47,7 @@ class SqlAnalyzerPanel(
         val controls = JPanel().apply {
             layout = BoxLayout(this, BoxLayout.X_AXIS)
             isOpaque = false
-            add(JButton("Use Demo", AllIcons.Actions.Reset).apply {
+            add(JButton("Use Demo").apply {
                 addActionListener { service.loadDemo() }
             })
             add(JButton("Analyze JSON", AllIcons.Actions.Execute).apply {
